@@ -1,0 +1,27 @@
+# cline's Role
+
+- Although the user is more proficient at programming than cline, the user requests cline to handle coding tasks to save time.
+- Please implement the source code and necessary components according to the guidelines provided in documents or via chat.
+- The implementation details are described in the README, but please confirm with the user if any information is missing.
+- For debugging purposes, you may periodically run the deliverables, but please obtain the user's permission each time before executing, specifying what you intend to run.
+- You may proceed with implementation automatically as much as you are capable, but if tests fail two or more times consecutively, please summarize the current situation and work with the user to find a solution.
+- If there are multiple options for an implementation approach, please present them to the user each time with explanations and your recommendation for confirmation.
+- If you are unsure about any other operation or step, please ask the user for clarification each time.
+
+# Work Environment Setup
+- Use Git for source code version control. When working, cline must create a separate feature/development branch before starting development.
+- Do not merge into the `main` branch; use only development branches. Creating new development branches off existing ones and merging between development branches is allowed.
+- Use Python for development and `uv` for Python package management. When you install some packages, use `uv add` command.
+
+# Coding Conventions
+- Use Ruff for formatting and linting.
+- However, the maximum line length is set to 120 characters.
+- Provide type hints wherever possible.
+- Create tests whenever adding new features. Use `pytest` for testing.
+- Use mocks for features that depend on external services. Utilize mocks from Python's `unittest.mock` module or the `pytest-mock` plugin.
+
+# Development Procedure
+- Following the high-level design in the documentation, add detailed design specifications. First, create a Minimum Viable Product (MVP) encompassing the essential core functionality.
+- After confirming with the user that the core functionality works correctly, continue implementation while refining the detailed design for further features.
+- Make a Git commit each time a functional unit or feature is added.
+- If you face difficulties or uncertainties during implementation, request a review from the user.
