@@ -7,8 +7,23 @@ requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.115.12",
     "google-genai>=1.12.1",
+    # "pytest>=8.3.5", # Moved to dev dependencies
+    # "pytest-mock>=3.14.0", # Moved to dev dependencies
     "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
     "pytest-mock>=3.14.0",
     "requests>=2.32.3",
+    "ruff>=0.11.7",
     "uvicorn>=0.34.2",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.5",
+    "pytest-mock>=3.14.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]  # Search in the root directory
+include = ["backend*"]  # Include only the backend package and its subpackages
+exclude = ["frontend*"] # Explicitly exclude frontend

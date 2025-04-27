@@ -28,3 +28,9 @@ def test_config_endpoint():
     response = client.post("/search", json={"query": "test query"})
     assert response.status_code == 200
     assert response.json()["agent_name"] == "New Agent Name"
+
+def test_chat_endpoint():
+    response = client.post("/chat", json={"message": "test message"})
+    assert response.status_code == 200
+    assert "response" in response.json()
+    assert "agent_name" in response.json()

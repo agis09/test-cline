@@ -33,6 +33,13 @@ class SearchResponse(BaseModel):
     results: list[str]
     agent_name: str
 
+class ChatRequest(BaseModel):
+    message: str
+
+class ChatResponse(BaseModel):
+    response: str
+    agent_name: str
+
 class AgentConfig(BaseModel):
     name: str
     personality: str
@@ -75,6 +82,17 @@ async def config(config: AgentConfig):
     app.state.agent_name = config.name
     app.state.agent_personality = config.personality
     return {"message": "Agent configuration updated successfully."}
+
+@app.post("/chat")
+async def chat(request: ChatRequest):
+    global chat_history
+    prompt = f"{app.state.agent_personality}. Previous chat history: {chat_history}. User: {request.message}"
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",contents=[prompt])
+    agent_response = response.text
+    chat_history.append(f"User: {request.message}")
+    chat_history.append(f"Agent: {agent_response}")
+    return ChatResponse(response=agent_response, agent_name=app.state.agent_name)
 
 @app.get("/")
 async def root():
