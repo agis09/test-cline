@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 
@@ -8,6 +9,14 @@ import requests
 from google.genai import types
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Configure Gemini API
 GOOGLE_API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -42,7 +51,7 @@ async def search(request: SearchRequest):
         try:
             image_bytes = requests.get(request.image_url).content
             img = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
-            prompt = f"What is this image about? Also search for: {request.query}. Summarize the results and provide source website references. Previous chat history: {chat_history}"
+            prompt = f"Search for: {request.query} with the image. Summarize the results with Japanese and provide source website references. Previous chat history: {chat_history}"
             response = client.models.generate_content(
                 model="gemini-2.0-flash",
                 contents=[img, prompt])
@@ -51,7 +60,7 @@ async def search(request: SearchRequest):
             return SearchResponse(results=[f"Error processing image: {e}"], agent_name=app.state.agent_name)
 
     else:
-        prompt = f"Search for: {request.query}. Summarize the results and provide source website references. Previous chat history: {chat_history}"
+        prompt = f"Search for: {request.query}. Summarize the results with Japanese and provide source website references. Previous chat history: {chat_history}"
         response = client.models.generate_content(
             model="gemini-2.0-flash",contents=[prompt])
         results = [response.text]
