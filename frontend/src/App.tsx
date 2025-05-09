@@ -5,9 +5,11 @@ import axios from 'axios';
 function App() {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post('/chat', { "message": message });
       setChatHistory([...chatHistory, `User: ${message}`, `Agent: ${response.data.response}`]);
@@ -15,6 +17,8 @@ function App() {
     } catch (error) {
       console.error("Error making request:", error);
       setChatHistory([...chatHistory, "Error: Could not connect to backend."]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -31,6 +35,7 @@ function App() {
   return (
     <div className="App">
       <h1>Chat with Agent</h1>
+      {isLoading && <p>Waiting for response...</p>}
       <div className="chat-history">
         {chatHistory.map((message, index) => (
           <p key={index}>{message}</p>

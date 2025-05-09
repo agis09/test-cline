@@ -44,5 +44,13 @@
     ]
   },
   "proxy": "http://localhost:8000",
-  "port": 3000
+  "port": 3000,
+  "jest": {
+    "moduleNameMapper": {
+      "axios": "<rootDir>/node_modules/axios/lib/axios.js"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!axios)/"
+    ]
+  }
 }
