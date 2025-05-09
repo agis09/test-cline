@@ -8,26 +8,29 @@
 
 .chat-history {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Align items to the start (left) by default */
 }
 
 .chat-history p {
   margin: 5px;
   padding: 10px;
   border-radius: 10px;
-  display: inline-block;
-  clear: both;
   max-width: 80%;
+  word-wrap: break-word;
+  /* Allows long words to be broken and wrap onto the next line */
 }
 
 .chat-history p:nth-child(odd) {
-  background-color: #DCF8C6;
-  float: right;
+  align-self: flex-end;
+  /* Align odd messages to the right */
 }
 
 .chat-history p:nth-child(even) {
-  background-color: #FFFFFF;
-  float: left;
-  border: 1px solid #ddd;
+  align-self: flex-start;
+  /* Align even messages to the left */
 }
 
 form {
@@ -51,4 +54,22 @@ button[type="submit"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.agent-message {
+  color: #39655a;
+  /* Blue */
+  background-color: #cbf3d9;
+  /* AliceBlue - a very light blue */
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.user-message {
+  color: #282c34;
+  /* Dark gray */
+  background-color: #e6e6fa;
+  /* Lavender - a light purple */
+  border-radius: 15px;
+  padding: 10px;
 }

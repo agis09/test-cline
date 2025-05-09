@@ -58,7 +58,7 @@ async def search(request: SearchRequest):
         try:
             image_bytes = requests.get(request.image_url).content
             img = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
-            prompt = f"Search for: {request.query} with the image. Summarize the results with Japanese and provide source website references. Previous chat history: {chat_history}"
+            prompt = f"Search for: {request.query} with the image. Summarize the results with Japanese and provide source website references. Previous chat history: {chat_history} \n 最終出力は日本語で行ってください。"
             response = client.models.generate_content(
                 model="gemini-2.0-flash",
                 contents=[img, prompt])

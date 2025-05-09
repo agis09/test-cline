@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import { marked } from 'marked';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -11,8 +12,11 @@ function App() {
     e.preventDefault();
     setIsLoading(true);
     try {
+      setChatHistory([...chatHistory, `User: ${message}`, `Agent: processing......`]);
       const response = await axios.post('/chat', { "message": message });
-      setChatHistory([...chatHistory, `User: ${message}`, `Agent: ${response.data.response}`]);
+      const agentResponse = response.data.response;
+      const parsedMessage = marked.parse(agentResponse);
+      setChatHistory(prevChatHistory => [...prevChatHistory, `User: ${message}`, `Agent: ${parsedMessage}`]);
       setMessage(''); // Clear the input field after sending
     } catch (error) {
       console.error("Error making request:", error);
@@ -37,9 +41,13 @@ function App() {
       <h1>Chat with Agent</h1>
       {isLoading && <p>Waiting for response...</p>}
       <div className="chat-history">
-        {chatHistory.map((message, index) => (
-          <p key={index}>{message}</p>
-        ))}
+        {chatHistory.map((message, index) => {
+          const isUser = message.startsWith("User:");
+          const messageClass = isUser ? "user-message" : "agent-message";
+          return (
+            <p key={index} className={messageClass} dangerouslySetInnerHTML={{ __html: message }} />
+          );
+        })}
       </div>
       <form onSubmit={handleSubmit}>
         <input
